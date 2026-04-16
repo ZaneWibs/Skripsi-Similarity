@@ -46,7 +46,6 @@ skripsi-similarity/
 
 ### 1. Clone Repository
 
-```bash
 git clone https://github.com/USERNAME/skripsi-similarity.git
 cd skripsi-similarity
 
@@ -56,28 +55,28 @@ Aktifkan:
 Windows:
 venv\Scripts\activate
 
-3. Install Dependencies
+### 3. Install Dependencies
 pip install -r requirements.txt
 
 
-▶️ Menjalankan Backend
+## ▶️ Menjalankan Backend
 python -m uvicorn main:app --reload
 Akses API:
 http://127.0.0.1:8000/docs
 
-🌐 Menjalankan Frontend
+## 🌐 Menjalankan Frontend
 
 Buka file:
 index.html
 di browser (double click atau Open with Browser)
 
-📥 Download Hasil
+## 📥 Download Hasil
 
 Klik tombol:
 Download Judul Mirip
 File CSV akan otomatis terdownload.
 
-📊 Output Sistem
+## 📊 Output Sistem
 
 Contoh hasil:
 Jumlah judul mirip
@@ -87,26 +86,26 @@ Status:
 ✅ Masih bisa dikembangkan
 Top 5 judul paling mirip
 
-⚠️ Catatan
+## ⚠️ Catatan
 Model pertama kali dijalankan akan mendownload ±500MB
 Pastikan koneksi internet stabil
 File .pkl sebaiknya tidak diupload ke GitHub jika besar
 
-🧑‍💻 Teknologi
+## 🧑‍💻 Teknologi
 Python
 FastAPI
 Sentence Transformers
 Scikit-learn
 HTML + JavaScript
 
-🎯 Penggunaan
+## 🎯 Penggunaan
 
 Sistem ini digunakan untuk:
 Validasi judul skripsi
 Menghindari duplikasi topik
 Membantu dosen / akademik
 
-📌 Author
+## 📌 Author
 
 Dzaky Muhammad Zidane
 Informatika - Universitas Sebelas Maret
