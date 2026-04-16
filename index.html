@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cek Kemiripan Judul Skripsi</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            padding: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-analisis {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-download {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 5px;
+        }
+
+        .status {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Cek Kemiripan Judul Skripsi</h2>
+
+    <input type="text" id="nama" placeholder="Nama">
+    <input type="text" id="nim" placeholder="NIM">
+    <textarea id="judul" placeholder="Masukkan Judul Skripsi"></textarea>
+
+    <button class="btn-analisis" onclick="analisis()">Analisis</button>
+    <button class="btn-download" onclick="downloadCSV()">Download Judul Mirip</button>
+
+    <div class="result" id="hasil"></div>
+</div>
+
+<script>
+async function analisis() {
+
+    const nama = document.getElementById("nama").value;
+    const nim = document.getElementById("nim").value;
+    const judul = document.getElementById("judul").value;
+
+    const response = await fetch("http://127.0.0.1:8000/analisis", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({nama, nim, judul})
+    });
+
+    const data = await response.json();
+
+    let html = `
+        <p><b>Nama:</b> ${data.nama}</p>
+        <p><b>NIM:</b> ${data.nim}</p>
+        <p><b>Judul:</b> ${data.judul}</p>
+
+        <p><b>Hasil:</b> ${data.narasi}</p>
+        <p class="status">${data.status}</p>
+
+        <h4>Top Judul Mirip:</h4>
+        <ul>
+    `;
+
+    data.top.forEach(item => {
+        html += `<li>${item.judul} (${item.score}%) - ${item.label}</li>`;
+    });
+
+    html += "</ul>";
+
+    document.getElementById("hasil").innerHTML = html;
+}
+
+// =======================
+// DOWNLOAD CSV
+// =======================
+async function downloadCSV() {
+
+    const nama = document.getElementById("nama").value;
+    const nim = document.getElementById("nim").value;
+    const judul = document.getElementById("judul").value;
+
+    const response = await fetch("http://127.0.0.1:8000/download", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({nama, nim, judul})
+    });
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "judul_mirip.csv";
+    a.click();
+}
+</script>
+
+</body>
+</html>
